@@ -1,23 +1,29 @@
-<script>
+<script lang="ts">
+    import Dice from './_Dice.svelte';
+
 	let numDice = 2;
+    let totalDice = 0;
+
+    let rolledTimestamp: Date;
 </script>
 
 <input type="number" bind:value={numDice} min="1" max="100" />
 
-<p>{numDice}</p>
+<button on:click={() => {
+        totalDice = 0;
+        rolledTimestamp = new Date()}
+    } 
+    style="border:black">
+    Roll All
+</button>
+
+
 
 <div style="display: flex;">
 	{#each { length: numDice } as die, index}
-		<div class="dice">
-			{index + 1}
-		</div>
+		<Dice on:rolledValue={(event) => (totalDice += event.detail.value)}  {rolledTimestamp}></Dice>
 	{/each}
 </div>
 
-<style>
-	.dice {
-		padding: 5px;
-		margin: 5px;
-		background: lightgray;
-	}
-</style>
+<p>{totalDice}</p>
+
